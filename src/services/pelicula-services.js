@@ -44,17 +44,17 @@ class PeliculaService {
             console.log(error);
         }
     }
-    update = async (pizza,id) => {
+    update = async (pelicula,id) => {
         let rowsAffected = 0;
         try {
             let pool   = await sql.connect(config);
             let result = await pool.request()
-                .input("id", sql.Int, id)
-                .input("nombre", sql.NChar, pizza.Nombre)
-                .input("libreGluten", sql.Bit, pizza.LibreGluten)
-                .input("importe", sql.Float, pizza.Importe)
-                .input("descripcion", sql.NChar, pizza.Descripcion)
-                .query("UPDATE Pizzas SET nombre = @nombre, libreGluten = @libreGluten, importe = @importe, descripcion = @descripcion WHERE id = @id");
+            .input("Imagen", sql.VarChar, pelicula.Imagen)
+            .input("Titulo", sql.VarChar, pelicula.Titulo)
+            .input("FechaDeCreacion", sql.Date, pelicula.FechaDeCreacion)
+            .input("Calificacion", sql.Int, pelicula.Calificacion)
+            .input("Personaje", sql.VarChar, pelicula.Personaje)
+            .query("INSERT INTO Pelicula (Imagen, Titulo, FechaDeCreacion, Calificacion, Personaje) VALUES (@Imagen, @Titulo, @FechaDeCreacion, @Calificacion, @Personaje))");
                 rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -63,12 +63,12 @@ class PeliculaService {
     }
     deleteById = async (id) => {
         let retunrEntity = 0;
-        console.log('Estoy en: PizzaService.deleteById(id)')
+        console.log('Estoy en: PeliculaService.deleteById(id)')
     try {
         let pool = await sql.connect(config);
         let result = await pool.request()
-                            .input('pId', sql.Int, id)
-                            .query('DELETE FROM Pizzas WHERE id = @pId');
+                            .input('Id', sql.Int, id)
+                            .query('DELETE FROM Peliculas WHERE id = @Id');
         retunrEntity = result.recordsets;              
         console.log(result);      
     } catch (error) {
@@ -77,4 +77,4 @@ class PeliculaService {
     return retunrEntity;
     }
 }
-export default PizzaService;
+export default PeliculaService;

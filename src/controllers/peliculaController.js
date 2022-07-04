@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Pelicula from "../models/pelicula";
+import PeliculaService from "../services/pelicula-services";
 const router = Router();
 const peliculaService = new PeliculaService();
 
