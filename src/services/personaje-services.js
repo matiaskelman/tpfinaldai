@@ -39,7 +39,7 @@ class PersonajeService {
                                     .input("Peso", sql.Int, personaje.Peso)
                                     .input("Historia", sql.VarChar, personaje.Personaje)
                                     .input("Pelicula", sql.Int, personaje.pelicula)
-                                    .query("INSERT INTO Pelicula (Imagen, Nombre, Edad, Peso, Personaje) VALUES (@Imagen, @Nombre, @Edad, @Calificacion, @Personaje))");
+                                    .query("INSERT INTO Pelicula (Imagen, Nombre, Edad, Peso, Historia, Pelicula) VALUES (@Imagen, @Nombre, @Edad, @Peso, @Historia, @Pelicula))");
     return result.rowsAffected;
         } catch (error) {
             console.log(error);
