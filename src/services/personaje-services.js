@@ -1,7 +1,7 @@
 import config from "../../dbconfig";
 import sql from 'mssql'
 import Personaje from "../models/personaje";
-
+//Porno
 class PersonajeService {
     getAll = async () => {
         try {
