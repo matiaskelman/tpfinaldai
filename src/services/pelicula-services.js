@@ -7,7 +7,7 @@ class PeliculaService {
         try {
             let pool   = await sql.connect(config);
             let result = await pool.request()
-                                .query('SELECT * FROM PELICULA');
+                                .query('SELECT * FROM PELICULAS');
             return result.recordsets
         } catch (error) {
             console.log(error);
@@ -27,6 +27,20 @@ class PeliculaService {
         }
         return returnEntity;
     }
+    getByTitle = async (titulo) => {
+        let returnEntity = null;
+        console.log('Estoy en: PeliculaService.GetByTitle(titulo)')
+        try {
+            let pool   = await sql.connect(config);
+            let result = await pool.request()
+                                .input('pTitulo', sql.VarChar, titulo)
+                                .query('SELECT * FROM Pelicula WHERE titulo LIKE @pTitulo% ORDER BY FechaDeCreacion DESC');
+            returnEntity = result.recordsets[0][0];                    
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
+    }
 
     insert = async (pelicula) => {
         try {
@@ -36,9 +50,8 @@ class PeliculaService {
                                     .input("Imagen", sql.VarChar, pelicula.Imagen)
                                     .input("Titulo", sql.VarChar, pelicula.Titulo)
                                     .input("FechaDeCreacion", sql.Date, pelicula.FechaDeCreacion)
-                                    .input("Calificacion", sql.Int, pelicula.Calificacion)
-                                    .input("Personaje", sql.VarChar, pelicula.Personaje)
-                                    .query("INSERT INTO Pelicula (Imagen, Titulo, FechaDeCreacion, Calificacion, Personaje) VALUES (@Imagen, @Titulo, @FechaDeCreacion, @Calificacion, @Personaje))");
+                                    .input("Calificacion", sql.Int, pelicula.Calificacion)                    
+                                    .query("INSERT INTO Pelicula (Imagen, Titulo, FechaDeCreacion, Calificacion) VALUES (@Imagen, @Titulo, @FechaDeCreacion, @Calificacion))");
     return result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -49,13 +62,13 @@ class PeliculaService {
         try {
             let pool   = await sql.connect(config);
             let result = await pool.request()
+            .input("Id", sql.Int, pelicula.id)
             .input("Imagen", sql.VarChar, pelicula.Imagen)
             .input("Titulo", sql.VarChar, pelicula.Titulo)
             .input("FechaDeCreacion", sql.Date, pelicula.FechaDeCreacion)
             .input("Calificacion", sql.Int, pelicula.Calificacion)
-            .input("Personaje", sql.VarChar, pelicula.Personaje)
-            .query("INSERT INTO Pelicula (Imagen, Titulo, FechaDeCreacion, Calificacion, Personaje) VALUES (@Imagen, @Titulo, @FechaDeCreacion, @Calificacion, @Personaje))");
-                rowsAffected = result.rowsAffected;
+            .query("UPDATE Peliculas SET Imagen = @Imagen, Titulo = @Titulo, FechaDeCreacion = @FechaDeCreacion, Calificacion= @Calificacion WHERE ID = @id");                
+            rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
         }

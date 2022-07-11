@@ -16,6 +16,14 @@ router.get('/:id', async(req,res)=>{
     }
     return res.status(200).json(pelicula);
 });
+router.get('/:title', async(req,res)=>{
+    const pelicula = await peliculaService.getByTitle(req.params.title);
+    if (pelicula == null) {
+        console.log("No existe");
+        return res.sendStatus(404);
+    }
+    return res.status(200).json(pelicula);
+});
 router.post('', async (req,res) => {
     const pelicula = await peliculaService.insert(req.body);
     return res.status(201).json(pelicula);
